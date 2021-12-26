@@ -2,12 +2,15 @@ package api
 
 import (
 	"context"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	stats "github.com/semihalev/gin-stats"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
 	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
 	"net/http"
 	"os"
 	"os/signal"
+	"time"
 )
 
 // Server provides an http.Server.
@@ -21,6 +24,7 @@ func NewServer() (*Server, error) {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.Default()
+	AddMiddlewares(r)
 	MakeHandler(r)
 
 	address := ":" + config.Port()
@@ -30,6 +34,29 @@ func NewServer() (*Server, error) {
 	}
 
 	return &Server{srv}, nil
+}
+
+func AddMiddlewares(router *gin.Engine) {
+
+	//Adding CORS middleware
+	var allowedOrigins []string
+	if config.GetEnv() == "prod" {
+		allowedOrigins = []string{"https://pro.superdms.app"}
+	} else {
+		allowedOrigins = []string{"http://localhost"}
+	}
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     allowedOrigins,
+		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
+	logger.RegisterLoggerForRouter(router)
+	router.Use(stats.RequestStats())
 }
 
 // Start runs ListenAndServe on the http.Server with graceful shutdown.

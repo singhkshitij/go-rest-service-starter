@@ -1,11 +1,14 @@
 package logger
 
 import (
+	ginzap "github.com/gin-contrib/zap"
+	"github.com/gin-gonic/gin"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"log"
 	"strings"
+	"time"
 )
 
 var logger *zap.Logger
@@ -58,6 +61,12 @@ func NewLogger(logFile string) (*zap.Logger, error) {
 	return logger, err
 }
 
+func RegisterLoggerForRouter(router *gin.Engine) {
+	//add zap logger to gin
+	router.Use(ginzap.Ginzap(logger, time.RFC3339, true))
+	router.Use(ginzap.RecoveryWithZap(logger, true))
+}
+
 func Debug(msg string, fields ...zap.Field) {
 	logger.Debug(msg, fields...)
 }
@@ -68,4 +77,8 @@ func Info(msg string, fields ...zap.Field) {
 
 func KV(key string, val interface{}) zap.Field {
 	return zap.Any(key, val)
+}
+
+func Error(msg string, fields ...zap.Field) {
+	logger.Error(msg, fields...)
 }
