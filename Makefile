@@ -1,4 +1,4 @@
-.PHONY: server fmt vet cyclo
+.PHONY: server build run fmt vet cyclo
 
 SOURCE_DIRS=$(shell go list ./... | grep -v /vendor | grep -v /out | grep -v /gen |cut -d "/" -f2 | uniq)
 
@@ -7,6 +7,9 @@ run:
 
 server:
 	go run main.go server
+
+build:
+	go build -o bin/starter
 
 fmt:
 	go get -u golang.org/x/tools/cmd/goimports
