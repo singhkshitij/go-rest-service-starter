@@ -1,3 +1,6 @@
-PORT: 8080
+ENV: dev
+PORT: 8090
 LOG_LEVEL: debug
-
+REDIS_ENABLED: true
+REDIS_HOST: localhost
+REDIS_PORT: 6379

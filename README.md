@@ -17,6 +17,7 @@ The following feature set is a minimal selection of typical Web API requirements
 - Structured logging with [zap](https://github.com/uber-go/zap)
 - Routing with [Gin](https://github.com/gin-gonic/gin) and middleware
 - Request data validation using [Go Validator](https://github.com/go-playground/validator)
+- Redis support using [Go redis](https://github.com/go-redis/redis/)
 - Makefile setup
 
 ## Start Application
