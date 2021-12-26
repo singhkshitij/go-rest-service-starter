@@ -22,3 +22,9 @@ func getStringOrPanic(key string) string {
 	v := viper.GetString(key)
 	return v
 }
+
+func getBoolOrPanic(key string) bool {
+	checkKey(key)
+	v := viper.GetBool(key)
+	return v
+}

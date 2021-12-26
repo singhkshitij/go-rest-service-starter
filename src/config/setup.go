@@ -16,7 +16,6 @@ func GetConfigFile() string {
 func InitConfig() {
 	setDefaults()
 	if cfgFile != "" {
-		// Use env.yaml file from the flag.
 		viper.SetConfigFile(cfgFile)
 	} else {
 		viper.SetConfigName("config")
@@ -28,12 +27,11 @@ func InitConfig() {
 
 	viper.AutomaticEnv()
 
-	config = GetConfiguration()
-
 	err := viper.ReadInConfig()
 	if err != nil {
 		fmt.Println("Error while reading config file", err)
 	}
+	config = GetConfiguration()
 
 	if viper.ConfigFileUsed() == "" {
 		fmt.Println("Failed to load config file, falling back to env vars or default configs")
@@ -41,9 +39,4 @@ func InitConfig() {
 		cfgFile = viper.ConfigFileUsed()
 		fmt.Println("Config file used: " + cfgFile)
 	}
-}
-
-func setDefaults() {
-	viper.SetDefault("LOG_LEVEL", "debug")
-	viper.SetDefault("PORT", "8080")
 }

@@ -17,6 +17,9 @@ type Server struct {
 
 // NewServer creates and configures an APIServer serving all application routes.
 func NewServer() (*Server, error) {
+	if config.GetEnv() == "prod" {
+		gin.SetMode(gin.ReleaseMode)
+	}
 	r := gin.Default()
 	MakeHandler(r)
 

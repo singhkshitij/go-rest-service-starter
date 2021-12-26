@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/singhkshitij/golang-rest-service-starter/src/cache"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
 	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
 	"github.com/spf13/cobra"
@@ -35,6 +36,10 @@ func init() {
 func initSetup() {
 	config.InitConfig()
 	logger.Must(logger.NewLogger("")) //replace with config file if logs need to be put in a log file
+	err := cache.Setup()
+	if err != nil {
+		panic("err while setting up redis " + err.Error())
+	}
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
