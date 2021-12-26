@@ -2,6 +2,9 @@
 
 SOURCE_DIRS=$(shell go list ./... | grep -v /vendor | grep -v /out | grep -v /gen |cut -d "/" -f2 | uniq)
 
+run:
+	go run main.go
+
 server:
 	go run main.go server
 
