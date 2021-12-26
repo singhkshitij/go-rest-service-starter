@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/singhkshitij/golang-rest-service-starter/src/cache"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
+	"github.com/singhkshitij/golang-rest-service-starter/src/database"
 	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
 	"github.com/singhkshitij/golang-rest-service-starter/src/metrics"
 	"github.com/spf13/cobra"
@@ -42,6 +43,7 @@ func initSetup() {
 		panic("err while setting up redis " + err.Error())
 	}
 	metrics.Setup()
+	database.Setup()
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

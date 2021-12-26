@@ -20,10 +20,12 @@ The following feature set is a minimal selection of typical Web API requirements
 - Redis support using [Go redis](https://github.com/go-redis/redis/)
 - Enables request stats using [Gin stats](https://github.com/semihalev/gin-stats) on endpoint `/request/stats`
 - Enables metrics and observability via [Go metrics](https://github.com/rcrowley/go-metrics) and [Go gin Prometheus](https://github.com/zsais/go-gin-prometheus) on endpoint `/metrics`
+- Postgres enabled using [Go pg](https://github.com/go-pg/pg)
 - Makefile setup
 
 ## Start Application
 
 - Clone this repository
+- Rename `_config.yaml` to `config.yaml`
 - Run the application to see available commands: `make run`
 - Run the application with command _serve_: `make server`
