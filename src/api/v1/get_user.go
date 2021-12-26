@@ -1,6 +1,6 @@
 package v1
 
-func UserRoute() string {
+func GetUser() string {
 	return "success"
 }
 

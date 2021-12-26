@@ -38,7 +38,7 @@ func RegisterAppRoutes(r *gin.Engine) {
 			})
 		}
 		if ValidateReq(user, ctx){
-			result := v1.UserRoute()
+			result := v1.GetUser()
 			ctx.JSON(200, gin.H{
 				"message": result,
 			})
