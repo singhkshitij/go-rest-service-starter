@@ -1,42 +1,43 @@
 package metrics
 
 import (
-	"github.com/cyberdelia/go-metrics-graphite"
-	"github.com/rcrowley/go-metrics"
-	"github.com/singhkshitij/golang-rest-service-starter/src/config"
-	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
-	"log"
-	"net"
-	"os"
-	"time"
+	"github.com/penglongli/gin-metrics/ginmetrics"
 )
 
-var UserAPICount metrics.Counter
+var monitor *ginmetrics.Monitor
+var UserMetric *ginmetrics.Metric
 
 func Setup() {
-	UserAPICount = metrics.NewCounter()
-	metrics.Register("user-api-count", UserAPICount)
 
-	emitMetrics()
+	//SET GIN Metrics observability
+	// get global Monitor object
+	monitor = ginmetrics.GetMonitor()
+	monitor.SetMetricPath("/metrics")
+	// +optional set slow time, default 5s
+	monitor.SetSlowTime(2)
+	// +optional set request duration, default {0.1, 0.3, 1.2, 5, 10}
+	// used to p95, p99
+	monitor.SetDuration([]float64{0.1, 0.3, 1.2, 5, 10})
+
+	initialiseMetrics()
 }
 
-func emitMetrics() {
-	if config.GetEnv() == "prod" {
-		addr, err := net.ResolveTCPAddr("tcp", "34.117.7.29:80")
-		if err != nil {
-			logger.Error("Failed to resolve metrics datasource ", logger.KV("error", err))
-		}
-		go graphite.Graphite(
-			metrics.DefaultRegistry,
-			5*time.Second,
-			"metrics: ", addr)
-	} else {
-		go metrics.Log(metrics.DefaultRegistry,
-			2*time.Minute,
-			log.New(os.Stderr, "metrics: ", log.Lmicroseconds))
+func GetMetricsMonitor() *ginmetrics.Monitor {
+	return monitor
+}
+
+func initialiseMetrics(){
+	UserMetric = &ginmetrics.Metric{
+		Type:        ginmetrics.Counter,
+		Name:        "user_api_count",
+		Description: "an example of counter type metric",
+		Labels:      []string{"user"},
 	}
+
+	// Add metric to global monitor object
+	_ = ginmetrics.GetMonitor().AddMetric(UserMetric)
 }
 
-func Increment(counter metrics.Counter) {
-	counter.Inc(1)
+func Increment(metric string, labels []string) {
+	ginmetrics.GetMonitor().GetMetric(metric).Inc(labels)
 }

@@ -3,7 +3,6 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	stats "github.com/semihalev/gin-stats"
 	v1 "github.com/singhkshitij/golang-rest-service-starter/src/api/v1"
 	"github.com/singhkshitij/golang-rest-service-starter/src/metrics"
@@ -34,7 +33,7 @@ func MakeHandler(r *gin.Engine) {
 func RegisterAppRoutes(r *gin.Engine) {
 	r.POST("/v1/user", func(ctx *gin.Context) {
 		//This is sample app metric. Change this to something meaningful
-		metrics.Increment(metrics.UserAPICount)
+		metrics.Increment(metrics.UserMetric.Name, metrics.UserMetric.Labels)
 		var user v1.User
 		err := ctx.BindJSON(&user)
 		if err != nil {
@@ -42,7 +41,7 @@ func RegisterAppRoutes(r *gin.Engine) {
 				"error": err.Error(),
 			})
 		}
-		if ValidateReq(user, ctx){
+		if ValidateReq(user, ctx) {
 			result := v1.GetUser()
 			ctx.JSON(200, gin.H{
 				"message": result,
@@ -50,14 +49,6 @@ func RegisterAppRoutes(r *gin.Engine) {
 		}
 
 	})
-}
-
-func prometheusHandler() gin.HandlerFunc {
-	h := promhttp.Handler()
-
-	return func(c *gin.Context) {
-		h.ServeHTTP(c.Writer, c.Request)
-	}
 }
 
 func RegisterHealthCheckRoutes(r *gin.Engine) {
@@ -71,7 +62,4 @@ func RegisterHealthCheckRoutes(r *gin.Engine) {
 	r.GET("/request/stats", func(c *gin.Context) {
 		c.JSON(http.StatusOK, stats.Report())
 	})
-
-	//handles prometheus metrics
-	r.GET("/metrics", prometheusHandler())
 }
