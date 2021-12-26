@@ -1,10 +1,6 @@
-# Go Restful API Boilerplate
+# Go REST Service Starter/Boilerplate
 
-[![GoDoc Badge]][godoc] [![GoReportCard Badge]][goreportcard]
-
-Easily extendible RESTful API boilerplate aiming to follow idiomatic go and best practice.
-
-The goal of this boiler is to have a solid and structured foundation to build upon on.
+Easily extendible REST API Service boilerplate aiming to follow idiomatic go and best practice.
 
 Any feedback and pull requests are welcome and highly appreciated. Feel free to open issues just for comments and discussions.
 
@@ -29,3 +25,8 @@ The following feature set is a minimal selection of typical Web API requirements
 - Rename `_config.yaml` to `config.yaml`
 - Run the application to see available commands: `make run`
 - Run the application with command _serve_: `make server`
+
+## Prerequisite
+
+- Go installed
+- To have psql running and `test` db created
