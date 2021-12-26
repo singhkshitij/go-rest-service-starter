@@ -65,3 +65,7 @@ func Debug(msg string, fields ...zap.Field) {
 func Info(msg string, fields ...zap.Field) {
 	logger.Info(msg, fields...)
 }
+
+func KV(key string, val interface{}) zap.Field {
+	return zap.Any(key, val)
+}

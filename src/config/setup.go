@@ -28,9 +28,7 @@ func InitConfig() {
 
 	viper.AutomaticEnv()
 
-	config = &Configuration{
-		logLevel:       getStringOrPanic("LOG_LEVEL"),
-	}
+	config = GetConfiguration()
 
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -47,6 +45,5 @@ func InitConfig() {
 
 func setDefaults() {
 	viper.SetDefault("LOG_LEVEL", "debug")
-	viper.SetDefault("HOST", "0.0.0.0")
 	viper.SetDefault("PORT", "8080")
 }
