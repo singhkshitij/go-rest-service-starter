@@ -1,11 +1,10 @@
 package api
 
 import (
-	"fmt"
-	"github.com/spf13/viper"
+	"github.com/singhkshitij/golang-rest-service-starter/src/config"
+	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
 )
 
 func NewServer() {
-	fmt.Println("Server started", viper.Get("LOG_LEVEL"))
+	logger.Info("Server started " + config.LogLevel())
 }
-

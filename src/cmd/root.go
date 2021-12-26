@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
+	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -18,7 +19,7 @@ var RootCmd = &cobra.Command{
 }
 
 func init() {
-	cobra.OnInitialize(config.InitConfig)
+	cobra.OnInitialize(initSetup)
 	cfgFile := config.GetConfigFile()
 
 	// Here you will define your flags and configuration settings.
@@ -31,6 +32,11 @@ func init() {
 	// RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
+func initSetup() {
+	config.InitConfig()
+	logger.Must(logger.NewLogger("")) //replace with config file if logs need to be put in a log file
+}
+
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
@@ -39,4 +45,3 @@ func Execute() {
 		os.Exit(1)
 	}
 }
-

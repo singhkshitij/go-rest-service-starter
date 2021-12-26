@@ -6,6 +6,7 @@ import (
 )
 
 var cfgFile string
+var config *Configuration
 
 func GetConfigFile() string {
 	return cfgFile
@@ -26,6 +27,11 @@ func InitConfig() {
 	}
 
 	viper.AutomaticEnv()
+
+	config = &Configuration{
+		logLevel:       getStringOrPanic("LOG_LEVEL"),
+	}
+
 	err := viper.ReadInConfig()
 	if err != nil {
 		fmt.Println("Error while reading config file", err)
