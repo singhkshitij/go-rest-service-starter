@@ -9,6 +9,7 @@ require (
 	github.com/go-pg/pg/v10 v10.10.6
 	github.com/go-playground/validator/v10 v10.9.0
 	github.com/go-redis/redis/v8 v8.11.4
+	github.com/go-resty/resty/v2 v2.7.0
 	github.com/hypnoglow/go-pg-monitor v0.2.0
 	github.com/hypnoglow/go-pg-monitor/gopgv10 v0.2.0
 	github.com/penglongli/gin-metrics v0.1.9

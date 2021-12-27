@@ -5,6 +5,7 @@ import (
 	"github.com/singhkshitij/golang-rest-service-starter/src/cache"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
 	"github.com/singhkshitij/golang-rest-service-starter/src/database"
+	"github.com/singhkshitij/golang-rest-service-starter/src/http_client"
 	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
 	"github.com/singhkshitij/golang-rest-service-starter/src/metrics"
 	"github.com/spf13/cobra"
@@ -44,6 +45,7 @@ func initSetup() {
 	}
 	metrics.Setup()
 	database.Setup()
+	http_client.Setup()
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
