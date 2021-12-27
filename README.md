@@ -20,6 +20,10 @@ The following feature set is a minimal selection of typical Web API requirements
 - Http client support using [Go resty](https://github.com/go-resty/resty)
 - Makefile setup
 
+### TODO
+- Add email support
+- Add Oauth support
+
 ## Start Application
 
 - Clone this repository
