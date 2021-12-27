@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/singhkshitij/golang-rest-service-starter/src/cache"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
 	"github.com/singhkshitij/golang-rest-service-starter/src/database"
@@ -9,7 +11,6 @@ import (
 	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
 	"github.com/singhkshitij/golang-rest-service-starter/src/metrics"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 // RootCmd represents the base command when called without any subcommands

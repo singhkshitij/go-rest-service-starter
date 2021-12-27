@@ -1,14 +1,15 @@
 package logger
 
 import (
+	"log"
+	"strings"
+	"time"
+
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"log"
-	"strings"
-	"time"
 )
 
 var logger *zap.Logger

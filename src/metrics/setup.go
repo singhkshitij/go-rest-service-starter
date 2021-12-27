@@ -26,7 +26,7 @@ func GetMetricsMonitor() *ginmetrics.Monitor {
 	return monitor
 }
 
-func initialiseMetrics(){
+func initialiseMetrics() {
 	UserMetric = &ginmetrics.Metric{
 		Type:        ginmetrics.Counter,
 		Name:        "user_api_count",

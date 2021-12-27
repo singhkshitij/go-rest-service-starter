@@ -2,16 +2,17 @@ package api
 
 import (
 	"context"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	stats "github.com/semihalev/gin-stats"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
 	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
 	"github.com/singhkshitij/golang-rest-service-starter/src/metrics"
-	"net/http"
-	"os"
-	"os/signal"
-	"time"
 )
 
 // Server provides an http.Server.

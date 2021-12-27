@@ -1,12 +1,13 @@
 package api
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	stats "github.com/semihalev/gin-stats"
 	v1 "github.com/singhkshitij/golang-rest-service-starter/src/api/v1"
 	"github.com/singhkshitij/golang-rest-service-starter/src/metrics"
-	"net/http"
 )
 
 var validate *validator.Validate

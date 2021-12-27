@@ -1,6 +1,6 @@
-.PHONY: server build run fmt vet cyclo
+.PHONY: server build run fmt vet cyclo checks
 
-SOURCE_DIRS=$(shell go list ./... | grep -v /vendor | grep -v /out | grep -v /gen |cut -d "/" -f2 | uniq)
+SOURCE_DIRS=$(shell go list ./... | cut -d "/" -f4 | uniq)
 
 run:
 	go run main.go
@@ -9,11 +9,12 @@ server:
 	go run main.go server
 
 build:
-	go build -o bin/starter
+	go build -o bin/superdms
 
 fmt:
 	go get -u golang.org/x/tools/cmd/goimports
 	@echo "Reformatting..."
+	@gofmt -s -w .
 	@goimports -l -w $(SOURCE_DIRS)
 
 vet:
@@ -23,4 +24,9 @@ vet:
 cyclo:
 	go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
 	@echo "Running cyclo..."
-	@gocyclo -over 7 $(SOURCE_DIRS)
+	@gocyclo -over 5 $(SOURCE_DIRS)
+
+print:
+	echo $(SOURCE_DIRS)
+
+checks: fmt vet cyclo

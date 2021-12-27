@@ -2,8 +2,9 @@ package http_client
 
 import (
 	"errors"
-	"github.com/go-resty/resty/v2"
 	"strconv"
+
+	"github.com/go-resty/resty/v2"
 )
 
 var client *resty.Client

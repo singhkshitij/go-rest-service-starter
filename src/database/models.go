@@ -12,4 +12,3 @@ type User struct {
 func (u User) String() string {
 	return fmt.Sprintf("User<%s %s %d %s>", u.FirstName, u.LastName, u.Age, u.Email)
 }
-

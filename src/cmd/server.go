@@ -1,11 +1,11 @@
 package cmd
 
 import (
+	"log"
+
 	"github.com/singhkshitij/golang-rest-service-starter/src/api"
 	"github.com/spf13/cobra"
-	"log"
 )
-
 
 func init() {
 	RootCmd.AddCommand(serveCmd)

@@ -69,6 +69,6 @@ func RedisConf() RedisConfig {
 	return (*config).redisConfig
 }
 
-func DbConfig() DatabaseConfig{
+func DbConfig() DatabaseConfig {
 	return (*config).dbConfig
 }
