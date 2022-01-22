@@ -1,4 +1,4 @@
-package worker
+package stream
 
 import (
 	"encoding/json"
@@ -51,7 +51,7 @@ func (s *StreamSvc) CreateRule(rules *rules.CreateRulesRequest) (*rules.TwitterR
 	return res, nil
 }
 
-func (s *StreamSvc) SetUnmarshalHook(objectToUnMarshalData interface{})  {
+func (s *StreamSvc) SetUnmarshalHook(objectToUnMarshalData interface{}) {
 	s.API.Stream.SetUnmarshalHook(func(bytes []byte) (interface{}, error) {
 
 		if err := json.Unmarshal(bytes, &objectToUnMarshalData); err != nil {
@@ -79,14 +79,13 @@ func (s *StreamSvc) DryRunDeleteAllRules(ruleIDs []int) (*rules.TwitterRuleRespo
 	return res, nil
 }
 
-func (s *StreamSvc) DeleteAllRules(ruleIDs []int) (*rules.TwitterRuleResponse, error) {
-	res, err := s.API.Rules.Delete(rules.NewDeleteRulesRequest(ruleIDs...), false)
+func (s *StreamSvc) DeleteAllRules(ruleIDs []int) error {
+	_, err := s.API.Rules.Delete(rules.NewDeleteRulesRequest(ruleIDs...), false)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return res, nil
+	return nil
 }
-
 
 func (s *StreamSvc) StartStream() error {
 	streamExpansions := twitterstream.NewStreamQueryParamsBuilder().

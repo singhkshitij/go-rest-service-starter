@@ -2,6 +2,9 @@ package cache
 
 import (
 	"context"
+	"fmt"
+	"github.com/singhkshitij/golang-rest-service-starter/src/schema"
+	"time"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
@@ -32,4 +35,17 @@ func Setup() error {
 		logger.Info("Skipping redis connection as its disabled with ", logger.KV("REDIS_ENABLED", config.RedisConf().Enabled))
 		return nil
 	}
+}
+
+func AddNewTweetToJob(redisReplyJobKey string, tweet schema.StreamTweet) (bool, error) {
+	memberVal := fmt.Sprintf("%s:%s", tweet.Data.AuthorId, tweet.Data.ConversationId)
+	cmdResult := client.ZAddNX(context.Background(), redisReplyJobKey, &redis.Z{
+		Score:  float64(time.Now().Unix()),
+		Member: memberVal,
+	})
+	result, err := cmdResult.Result()
+	if err != nil {
+		return false, err
+	}
+	return result == 1, nil
 }
