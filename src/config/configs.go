@@ -8,20 +8,17 @@ type RedisConfig struct {
 	Port    string
 }
 
-type DatabaseConfig struct {
-	Host     string
-	Port     string
-	Username string
-	Password string
-	Name     string
+type TwitterConfig struct {
+	APIkey       string
+	APIKeySecret string
 }
 
 type Configuration struct {
-	env         string
-	logLevel    string
-	port        string
-	redisConfig RedisConfig
-	dbConfig    DatabaseConfig
+	env           string
+	logLevel      string
+	port          string
+	redisConfig   RedisConfig
+	twitterConfig TwitterConfig
 }
 
 func GetConfiguration() *Configuration {
@@ -34,12 +31,9 @@ func GetConfiguration() *Configuration {
 			Host:    getStringOrPanic("REDIS_HOST"),
 			Port:    getStringOrPanic("REDIS_PORT"),
 		},
-		dbConfig: DatabaseConfig{
-			Host:     getStringOrPanic("DATABASE_HOST"),
-			Port:     getStringOrPanic("DATABASE_PORT"),
-			Username: getStringOrPanic("DATABASE_USER"),
-			Password: viper.GetString("DATABASE_PASSWORD"),
-			Name:     getStringOrPanic("DATABASE_NAME"),
+		twitterConfig: TwitterConfig{
+			APIkey:       getStringOrPanic("TWITTER_API_KEY"),
+			APIKeySecret: getStringOrPanic("TWITTER_API_SECRET"),
 		},
 	}
 }
@@ -69,6 +63,6 @@ func RedisConf() RedisConfig {
 	return (*config).redisConfig
 }
 
-func DbConfig() DatabaseConfig {
-	return (*config).dbConfig
+func TwitterConf() TwitterConfig {
+	return (*config).twitterConfig
 }

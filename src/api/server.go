@@ -12,7 +12,6 @@ import (
 	stats "github.com/semihalev/gin-stats"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
 	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
-	"github.com/singhkshitij/golang-rest-service-starter/src/metrics"
 )
 
 // Server provides an http.Server.
@@ -60,7 +59,6 @@ func AddMiddlewares(router *gin.Engine) {
 	logger.RegisterLoggerForRouter(router)
 	router.Use(stats.RequestStats())
 
-	metrics.GetMetricsMonitor().Use(router)
 }
 
 // Start runs ListenAndServe on the http.Server with graceful shutdown.

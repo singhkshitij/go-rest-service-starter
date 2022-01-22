@@ -6,7 +6,7 @@ run:
 	go run main.go
 
 server:
-	go run main.go server
+	go run main.go
 
 build:
 	go build -o bin/superdms

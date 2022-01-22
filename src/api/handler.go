@@ -7,7 +7,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	stats "github.com/semihalev/gin-stats"
 	v1 "github.com/singhkshitij/golang-rest-service-starter/src/api/v1"
-	"github.com/singhkshitij/golang-rest-service-starter/src/metrics"
 )
 
 var validate *validator.Validate
@@ -34,7 +33,6 @@ func MakeHandler(r *gin.Engine) {
 func RegisterAppRoutes(r *gin.Engine) {
 	r.POST("/v1/user", func(ctx *gin.Context) {
 		//This is sample app metric. Change this to something meaningful
-		metrics.Increment(metrics.UserMetric.Name, metrics.UserMetric.Labels)
 		var user v1.User
 		err := ctx.BindJSON(&user)
 		if err != nil {

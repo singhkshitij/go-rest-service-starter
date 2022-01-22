@@ -3,6 +3,7 @@ module github.com/singhkshitij/golang-rest-service-starter
 go 1.16
 
 require (
+	github.com/fallenstedt/twitter-stream v0.4.1 // indirect
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/zap v0.0.2
 	github.com/gin-gonic/gin v1.7.7
