@@ -1,15 +1,17 @@
 package worker
 
-import "github.com/singhkshitij/golang-rest-service-starter/src/worker/stream"
+import (
+	"github.com/singhkshitij/golang-rest-service-starter/src/worker/stream"
+)
 
 func Setup() {
-	stream.CleanUpStreamRules()
+	svc := stream.CleanUpStreamRules()
+	stream.CreateStreamRules(svc)
 	SetupStream()
 }
 
 func SetupStream() {
-	streamSvc := stream.InitStream()
-	stream.StartStreamJob(streamSvc)
+	createdStream := stream.StartStreamJob()
 	defer SetupStream()
-	stream.ConsumeStreamData(streamSvc)
+	stream.ConsumeStreamData(createdStream)
 }
