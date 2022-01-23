@@ -6,7 +6,6 @@ import (
 	"github.com/fallenstedt/twitter-stream/stream"
 	"github.com/singhkshitij/golang-rest-service-starter/src/cache"
 	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
-	"github.com/singhkshitij/golang-rest-service-starter/src/schema"
 	"strconv"
 )
 
@@ -37,7 +36,6 @@ func CleanUpStreamRules() *twitterstream.TwitterApi {
 
 func ConsumeStreamData(s stream.IStream) {
 	for tweet := range s.GetMessages() {
-		logger.Debug("Trying to read tweet")
 
 		// Handle disconnections from twitter
 		// https://developer.twitter.com/en/docs/twitter-api/tweets/volume-streams/integrate/handling-disconnections
@@ -51,24 +49,26 @@ func ConsumeStreamData(s stream.IStream) {
 			s.StopStream()
 			continue
 		}
-		result := tweet.Data.(schema.StreamTweet)
 
-		// Here I am printing out the text.
-		// You can send this off to a queue for processing.
-		// Or do your processing here in the loop
-		logger.Info("Consumed Tweet ", logger.KV("Data", result))
-		addTweetToCache(result)
+		addTweetToCache(tweet.Data)
 	}
 
 	logger.Info("Stopped Stream")
 }
 
-func addTweetToCache(tweet schema.StreamTweet) {
-	for _, ruleMatched := range tweet.MatchingRules {
-		_, err := cache.AddNewTweetToJob(ruleMatched.Tag, tweet)
-		if err != nil {
-			logger.Error("Failed to add tweet to redis cache", logger.KV("Error", err))
+func addTweetToCache(tweetData interface{}) {
+	logger.Debug("Trying to adding tweet to db", logger.KV("tweet", tweetData))
+	tweet, ok := tweetData.(TweetData)
+	if ok {
+		logger.Info("Info for tweet", logger.KV("tweet", tweet))
+		for _, ruleMatched := range tweet.MatchingRules {
+			_, err := cache.AddNewTweetToJob(ruleMatched.Tag, tweet.Data.AuthorId, tweet.Data.ConversationId)
+			if err != nil {
+				logger.Error("Failed to add tweet to redis cache", logger.KV("Error", err))
+			}
 		}
+	} else {
+		logger.Error("Failed to parse tweet to stream tweet")
 	}
 }
 
@@ -100,8 +100,7 @@ func StartStreamJob() stream.IStream {
 		AddPlaceField("country,country_code,full_name,name,place_type").
 		Build()
 
-
-	SetUnmarshalHook(schema.StreamTweet{}, streamSvc)
+	SetUnmarshalHook(streamSvc)
 
 	err := streamSvc.Stream.StartStream(streamExpansions)
 	if err != nil {

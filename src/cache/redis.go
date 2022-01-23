@@ -3,7 +3,6 @@ package cache
 import (
 	"context"
 	"fmt"
-	"github.com/singhkshitij/golang-rest-service-starter/src/schema"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -37,8 +36,8 @@ func Setup() error {
 	}
 }
 
-func AddNewTweetToJob(redisReplyJobKey string, tweet schema.StreamTweet) (bool, error) {
-	memberVal := fmt.Sprintf("%s:%s", tweet.Data.AuthorId, tweet.Data.ConversationId)
+func AddNewTweetToJob(redisReplyJobKey string, authorID string, conversationId string) (bool, error) {
+	memberVal := fmt.Sprintf("%s:%s", authorID, conversationId)
 	cmdResult := client.ZAddNX(context.Background(), redisReplyJobKey, &redis.Z{
 		Score:  float64(time.Now().Unix()),
 		Member: memberVal,

@@ -35,14 +35,6 @@ func BuildRulesRequest(rules map[string]string) rules.CreateRulesRequest {
 	return ruleBuilder.Build()
 }
 
-func DryRunCreateRule(rules *rules.CreateRulesRequest, s *twitterstream.TwitterApi) (*rules.TwitterRuleResponse, error) {
-	res, err := s.Rules.Create(*rules, true)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
-}
-
 func CreateRule(rules *rules.CreateRulesRequest, s *twitterstream.TwitterApi) (*rules.TwitterRuleResponse, error) {
 	res, err := s.Rules.Create(*rules, false)
 	if err != nil {
@@ -51,28 +43,20 @@ func CreateRule(rules *rules.CreateRulesRequest, s *twitterstream.TwitterApi) (*
 	return res, nil
 }
 
-func SetUnmarshalHook(objectToUnMarshalData interface{}, s *twitterstream.TwitterApi) {
+func SetUnmarshalHook(s *twitterstream.TwitterApi) {
 	s.Stream.SetUnmarshalHook(func(bytes []byte) (interface{}, error) {
-
-		if err := json.Unmarshal(bytes, &objectToUnMarshalData); err != nil {
+		dataType := TweetData{}
+		if err := json.Unmarshal(bytes, &dataType); err != nil {
 			fmt.Printf("failed to unmarshal bytes: %v", err)
 		}
+		return dataType, nil
 
-		return objectToUnMarshalData, nil
 		//return string(bytes), nil
 	})
 }
 
 func GetAllRules(s *twitterstream.TwitterApi) (*rules.TwitterRuleResponse, error) {
 	res, err := s.Rules.Get()
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
-}
-
-func DryRunDeleteAllRules(ruleIDs []int, s *twitterstream.TwitterApi) (*rules.TwitterRuleResponse, error) {
-	res, err := s.Rules.Delete(rules.NewDeleteRulesRequest(ruleIDs...), true)
 	if err != nil {
 		return nil, err
 	}
