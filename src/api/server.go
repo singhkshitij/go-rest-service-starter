@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/singhkshitij/golang-rest-service-starter/src/worker"
 	"net/http"
 	"os"
 	"os/signal"
@@ -70,6 +71,9 @@ func (srv *Server) Start() {
 		}
 	}()
 	logger.Info("Listening on " + srv.Addr)
+
+	//Start redis sink for tweets
+	worker.Setup()
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)

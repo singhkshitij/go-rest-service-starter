@@ -31,22 +31,24 @@ func MakeHandler(r *gin.Engine) {
 }
 
 func RegisterAppRoutes(r *gin.Engine) {
-	r.POST("/v1/user", func(ctx *gin.Context) {
-		//This is sample app metric. Change this to something meaningful
-		var user v1.User
-		err := ctx.BindJSON(&user)
+	r.GET("/api/v1/tweets/:category", func(ctx *gin.Context) {
+		category := ctx.Param("category")
+		pageNumber := ctx.Query("page")
+		result, totalTweets, err := v1.GetTweetsForCategory(category, pageNumber)
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-		}
-		if ValidateReq(user, ctx) {
-			result := v1.GetUser()
 			ctx.JSON(200, gin.H{
-				"message": result,
+				"success": false,
+				"error":   err,
+			})
+		} else {
+			ctx.JSON(200, gin.H{
+				"success": true,
+				"data": &v1.TweetCategoryResponse{
+					Results:     result,
+					TotalTweets: totalTweets,
+				},
 			})
 		}
-
 	})
 }
 

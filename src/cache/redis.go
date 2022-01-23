@@ -2,10 +2,8 @@ package cache
 
 import (
 	"context"
-	"fmt"
-	"time"
-
 	"github.com/go-redis/redis/v8"
+	"github.com/singhkshitij/golang-rest-service-starter/schema"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
 	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
 )
@@ -36,15 +34,19 @@ func Setup() error {
 	}
 }
 
-func AddNewTweetToJob(redisReplyJobKey string, authorID string, conversationId string) (bool, error) {
-	memberVal := fmt.Sprintf("%s:%s", authorID, conversationId)
-	cmdResult := client.ZAddNX(context.Background(), redisReplyJobKey, &redis.Z{
-		Score:  float64(time.Now().Unix()),
-		Member: memberVal,
-	})
+func AddNewTweetToJob(redisReplyJobKey string, tweet schema.TweetData) (bool, error) {
+	cmdResult := client.LPush(context.Background(), redisReplyJobKey, tweet)
 	result, err := cmdResult.Result()
 	if err != nil {
 		return false, err
 	}
 	return result == 1, nil
+}
+
+func GetValuesForListKey(category string, startIndex int, endIndex int) []string {
+	return client.LRange(context.Background(), category, int64(startIndex), int64(endIndex)).Val()
+}
+
+func GetListLength(category string) int64 {
+	return client.LLen(context.Background(), category).Val()
 }

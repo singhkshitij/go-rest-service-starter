@@ -4,6 +4,7 @@ import (
 	twitterstream "github.com/fallenstedt/twitter-stream"
 	"github.com/fallenstedt/twitter-stream/rules"
 	"github.com/fallenstedt/twitter-stream/stream"
+	"github.com/singhkshitij/golang-rest-service-starter/schema"
 	"github.com/singhkshitij/golang-rest-service-starter/src/cache"
 	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
 	"strconv"
@@ -57,12 +58,10 @@ func ConsumeStreamData(s stream.IStream) {
 }
 
 func addTweetToCache(tweetData interface{}) {
-	logger.Debug("Trying to adding tweet to db", logger.KV("tweet", tweetData))
-	tweet, ok := tweetData.(TweetData)
+	tweet, ok := tweetData.(schema.TweetData)
 	if ok {
-		logger.Info("Info for tweet", logger.KV("tweet", tweet))
 		for _, ruleMatched := range tweet.MatchingRules {
-			_, err := cache.AddNewTweetToJob(ruleMatched.Tag, tweet.Data.AuthorId, tweet.Data.ConversationId)
+			_, err := cache.AddNewTweetToJob(ruleMatched.Tag, tweet)
 			if err != nil {
 				logger.Error("Failed to add tweet to redis cache", logger.KV("Error", err))
 			}

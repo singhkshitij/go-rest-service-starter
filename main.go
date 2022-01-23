@@ -5,7 +5,6 @@ import (
 	"github.com/singhkshitij/golang-rest-service-starter/src/cache"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
 	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
-	"github.com/singhkshitij/golang-rest-service-starter/src/worker"
 	"log"
 )
 
@@ -16,7 +15,6 @@ func init() {
 	if err != nil {
 		panic("err while setting up redis " + err.Error())
 	}
-	worker.Setup()
 }
 
 func main() {

@@ -6,6 +6,7 @@ import (
 	"github.com/fallenstedt/twitter-stream"
 	"github.com/fallenstedt/twitter-stream/rules"
 	"github.com/fallenstedt/twitter-stream/token_generator"
+	"github.com/singhkshitij/golang-rest-service-starter/schema"
 	"github.com/singhkshitij/golang-rest-service-starter/src/config"
 )
 
@@ -45,7 +46,7 @@ func CreateRule(rules *rules.CreateRulesRequest, s *twitterstream.TwitterApi) (*
 
 func SetUnmarshalHook(s *twitterstream.TwitterApi) {
 	s.Stream.SetUnmarshalHook(func(bytes []byte) (interface{}, error) {
-		dataType := TweetData{}
+		dataType := schema.TweetData{}
 		if err := json.Unmarshal(bytes, &dataType); err != nil {
 			fmt.Printf("failed to unmarshal bytes: %v", err)
 		}

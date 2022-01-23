@@ -1,6 +1,9 @@
-package stream
+package schema
 
-import "time"
+import (
+	"encoding/json"
+	"time"
+)
 
 type TweetData struct {
 	Data struct {
@@ -78,4 +81,8 @@ type TweetData struct {
 		Id  string `json:"id,omitempty"`
 		Tag string `json:"tag,omitempty"`
 	} `json:"matching_rules,omitempty"`
+}
+
+func (i TweetData) MarshalBinary() (data []byte, err error) {
+	return json.Marshal(i)
 }
