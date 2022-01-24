@@ -8,7 +8,13 @@ import (
 	"github.com/singhkshitij/golang-rest-service-starter/src/cache"
 	"github.com/singhkshitij/golang-rest-service-starter/src/logger"
 	"strconv"
+	"time"
 )
+
+var RulesForRequest = map[string]string{
+"airdropRule": "lang:en -is:retweet -is:reply -is:quote is:verified airdrop",
+"jobRule":     "lang:en -is:retweet -is:reply -is:quote is:verified job",
+}
 
 func CleanUpStreamRules() *twitterstream.TwitterApi {
 	streamSvc := InitStream()
@@ -60,6 +66,7 @@ func ConsumeStreamData(s stream.IStream) {
 func addTweetToCache(tweetData interface{}) {
 	tweet, ok := tweetData.(schema.TweetData)
 	if ok {
+		tweet.CachedAt = time.Now()
 		for _, ruleMatched := range tweet.MatchingRules {
 			_, err := cache.AddNewTweetToJob(ruleMatched.Tag, tweet)
 			if err != nil {
@@ -72,11 +79,7 @@ func addTweetToCache(tweetData interface{}) {
 }
 
 func CreateStreamRules(svc *twitterstream.TwitterApi) *rules.TwitterRuleResponse {
-	rulesForRequest := map[string]string{
-		"airdropRule": "lang:en -is:retweet -is:reply -is:quote is:verified airdrop",
-		"jobRule":     "lang:en -is:retweet -is:reply -is:quote is:verified job",
-	}
-	rulesReq := BuildRulesRequest(rulesForRequest)
+	rulesReq := BuildRulesRequest(RulesForRequest)
 
 	rule, err := CreateRule(&rulesReq, svc)
 	if err != nil {

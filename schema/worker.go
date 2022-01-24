@@ -81,6 +81,7 @@ type TweetData struct {
 		Id  string `json:"id,omitempty"`
 		Tag string `json:"tag,omitempty"`
 	} `json:"matching_rules,omitempty"`
+	CachedAt time.Time `json:"cached_at,omitempty""`
 }
 
 func (i TweetData) MarshalBinary() (data []byte, err error) {

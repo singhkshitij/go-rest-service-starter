@@ -50,3 +50,11 @@ func GetValuesForListKey(category string, startIndex int, endIndex int) []string
 func GetListLength(category string) int64 {
 	return client.LLen(context.Background(), category).Val()
 }
+
+func RemoveListItemFromRight(category string) string {
+	return client.RPop(context.Background(), category).Val()
+}
+
+func GetItemsFromListAtIndex(category string, pos int64) string {
+	return client.LIndex(context.Background(), category, pos).Val()
+}
