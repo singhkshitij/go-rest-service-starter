@@ -6,6 +6,8 @@ type RedisConfig struct {
 	Enabled bool
 	Host    string
 	Port    string
+	Username string
+	Password string
 }
 
 type TwitterConfig struct {
@@ -30,6 +32,8 @@ func GetConfiguration() *Configuration {
 			Enabled: getBoolOrPanic("REDIS_ENABLED"),
 			Host:    getStringOrPanic("REDIS_HOST"),
 			Port:    getStringOrPanic("REDIS_PORT"),
+			Username: viper.GetString("REDIS_USERNAME"),
+			Password: viper.GetString("REDIS_PASSWORD"),
 		},
 		twitterConfig: TwitterConfig{
 			APIkey:       getStringOrPanic("TWITTER_API_KEY"),

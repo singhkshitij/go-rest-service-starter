@@ -13,13 +13,16 @@ var client *redis.Client
 func Setup() error {
 
 	if config.RedisConf().Enabled {
-		addr := config.RedisConf().Host + ":" + config.RedisConf().Port
+		redisConfig := config.RedisConf()
+		addr := redisConfig.Host + ":" + redisConfig.Port
 		client = redis.NewClient(&redis.Options{
 			Addr: addr,
 			OnConnect: func(ctx context.Context, cn *redis.Conn) error {
 				logger.Info("Connection to redis established")
 				return nil
 			},
+			Username: redisConfig.Username,
+			Password: redisConfig.Password,
 		})
 
 		pong, err := client.Ping(context.Background()).Result()

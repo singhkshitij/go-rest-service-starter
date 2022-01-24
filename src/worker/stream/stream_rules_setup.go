@@ -12,8 +12,8 @@ import (
 )
 
 var RulesForRequest = map[string]string{
-"airdropRule": "lang:en -is:retweet -is:reply -is:quote is:verified airdrop",
-"jobRule":     "lang:en -is:retweet -is:reply -is:quote is:verified job",
+	"airdropRule": "lang:en -is:retweet -is:reply -is:quote is:verified airdrop OR #airdrop",
+	"nftRule":     "lang:en -is:retweet -is:reply -is:quote is:verified #NFTGiveaway OR (airdrop nft) OR (#airdrop #nft)",
 }
 
 func CleanUpStreamRules() *twitterstream.TwitterApi {
